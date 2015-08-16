@@ -2,6 +2,10 @@
 
 配合soyie-mvvm框架的一整套前端流程开发体系
 
+## installtion ##
+
+> $ npm install -g soyie-cli
+
 ## so create project ##
 
 创建一个项目
