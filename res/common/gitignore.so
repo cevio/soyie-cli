@@ -1,0 +1,8 @@
+archive
+node_modules
+.idea
+dist
+bower_components
+test
+test.html
+dist.zip
