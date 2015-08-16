@@ -50,7 +50,7 @@ so build
 
 port默认8000端口。
 
-> $ envirs server 9000
+> $ so server 9000
 
 启动端口为9000的WEB服务。
 
