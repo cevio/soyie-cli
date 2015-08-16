@@ -60,7 +60,8 @@ model.moveCommonFiles = function(name, options){
             }
         ],
         "dependencies": {},
-        isSoyie: true
+        "isSoyie": true,
+        "files": []
     };
 
     JSONS.soyieRenderConfigs = {};

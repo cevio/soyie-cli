@@ -37,7 +37,6 @@ model.createHTML = function(name, options){
         return;
     }
     var html = fs.readFileSync(path.resolve(__dirname, '..', './res/template.html'), 'utf8');
-    console.log(html)
     if ( options.bootstrap ){
         var bootstrapCss = [], bootstrapSupportScript = [];
         var bootstrapCsses = [

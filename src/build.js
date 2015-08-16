@@ -20,6 +20,7 @@ model.prototype.build = function(){
         var config = fse.readJsonSync(this.pkg);
         if ( config.isSoyie ){
             this.config = config.soyieRenderConfigs;
+            this.files = config.files;
             this.handle();
         }else{
             console.log(clc.red('error: this dir is not a soyie project'));
@@ -38,6 +39,7 @@ model.prototype.handle = function(){
     var source = model.path('./src/fonts');
     var target = model.path('./dist/fonts');
     fse.copySync(source, target);
+    this.copyFiles();
     if ( fs.existsSync(src) ){
         var files = fs.readdirSync(src);
         for ( var index in files ){
@@ -51,6 +53,29 @@ model.prototype.handle = function(){
     }else{
         console.log(clc.red('error: compiler can not find the src dir.'));
     }
+};
+
+model.prototype.copyFiles = function(){
+    if ( this.files && this.files.length ){
+        var that = this;
+        this.files.forEach(function(file){
+            var source = model.path(file);
+            var dist = path.relative(model.path('./src'), source);
+            var target = path.resolve(cwd, './dist', dist);
+            that.autoCreate(path.dirname(target));
+            fse.copySync(source, target);
+        });
+    }
+};
+
+model.prototype.autoCreate = function(dir){
+    var p = '/';
+    dir.split('/').slice(1).forEach(function(d){
+        p = p + '/' + d;
+        if ( !fs.existsSync(p) ){
+            fs.mkdirSync(p);
+        }
+    });
 };
 
 model.prototype.compile = function(pather){
