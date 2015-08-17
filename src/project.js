@@ -170,7 +170,7 @@ model.createScriptFile = function(options){
     if ( options.bootstrap ){
         code.push("require('../lib/bootstrap');");
     }
-    code.push("require('../lib/soyie');");
+    code.push("var Soyie = require('../lib/soyie');");
     fs.writeFileSync(model.path('./src/js/index.js'), code.join('\n'));
     console.log('--- ' + clc.magenta('Create Script File: ') + clc.blue(model.path('./src/js/index.js')) + ' -> ' + clc.green('success!'));
 };
