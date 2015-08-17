@@ -51,10 +51,11 @@ program
 program
     .command('build')
     .description('build project')
-    .action(function(){
+    .option('-s, --standalone <umd>', 'model')
+    .action(function(options){
         var build = require('../src/build');
         var compiler = new build();
-        compiler.build();
+        compiler.build(options);
     });
 
 program.parse(process.argv);

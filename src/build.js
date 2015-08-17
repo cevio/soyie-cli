@@ -15,13 +15,13 @@ var model = module.exports = function(){
     this.pkg = model.path('./package.json');
 };
 
-model.prototype.build = function(){
+model.prototype.build = function(options){
     if ( fs.existsSync(this.pkg) ){
         var config = fse.readJsonSync(this.pkg);
         if ( config.isSoyie ){
             this.config = config.soyieRenderConfigs;
             this.files = config.files;
-            this.handle();
+            this.handle(options);
         }else{
             console.log(clc.red('error: this dir is not a soyie project'));
         }
@@ -30,7 +30,7 @@ model.prototype.build = function(){
     }
 };
 
-model.prototype.handle = function(){
+model.prototype.handle = function(options){
     var src = model.path('./src');
     var that = this;
     model.dir('./dist');
@@ -47,7 +47,7 @@ model.prototype.handle = function(){
             var pather = model.path('./src/' + file);
             var stats = fs.statSync(pather);
             if ( stats.isFile() ){
-                that.compile(pather);
+                that.compile(pather, options);
             }
         }
     }else{
@@ -78,14 +78,14 @@ model.prototype.autoCreate = function(dir){
     });
 };
 
-model.prototype.compile = function(pather){
+model.prototype.compile = function(pather, options){
     var ext = path.extname(pather).toLowerCase();
     var filename = path.basename(pather);
     var that = this;
     if ( ext === '.html' ){
         var html = fs.readFileSync(pather, 'utf8');
         html = this.buildCss(html);
-        this.buildScript(html, function(html){
+        this.buildScript(html, options, function(html){
             console.log(clc.blue('- ') + clc.magenta('compress:html > start'));
             var result = htmlminify(html, {removeComments: true,collapseWhitespace: true,minifyJS:true, minifyCSS:true});
             var htmlPath = model.path('./dist/' + filename);
@@ -128,7 +128,7 @@ model.prototype.buildCss = function(html){
     return html;
 };
 
-model.prototype.buildScript = function(html, callback){
+model.prototype.buildScript = function(html, options, callback){
     var a = /\<\!\-\-script\:start\:([^\-\-\>]+?)\-\-\>([\S\s]+?)\<\!\-\-script\:end\-\-\>/i.exec(html);
     if ( a ){
         var outputfile = a[1];
@@ -142,7 +142,10 @@ model.prototype.buildScript = function(html, callback){
             var dpath = path.resolve(cwd, './src', url);
             console.log(clc.blue('- ') + clc.magenta('compress:js > start'));
             console.log(clc.blue('- ') + clc.yellow('compress:js:browserify start > ') + dpath);
-            var bundle = browserify(dpath).bundle();
+            //standalone: cmd
+            var bundle = browserify(dpath, {
+                standalone: options.standalone
+            }).bundle();
             bundle.on('error', function(err) {
                 if (err.stack) {
                     console.error(err.stack);
