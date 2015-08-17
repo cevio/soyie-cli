@@ -13,7 +13,8 @@ var config = require('../package.json');
 var clc = require('cli-color');
 
 // version.
-program.version('0.0.1');
+var pkg = require('../package.json');
+program.version(pkg.version);
 
 program
     .command('server [port]')
