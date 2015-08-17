@@ -56,9 +56,9 @@ model.prototype.handle = function(options){
 };
 
 model.prototype.copyFiles = function(){
-    if ( this.files && this.files.length ){
+    if ( this.soyiefiles && this.soyiefiles.length ){
         var that = this;
-        this.files.forEach(function(file){
+        this.soyiefiles.forEach(function(file){
             var source = model.path(file);
             var dist = path.relative(model.path('./src'), source);
             var target = path.resolve(cwd, './dist', dist);
