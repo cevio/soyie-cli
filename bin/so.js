@@ -59,4 +59,14 @@ program
         compiler.build(options);
     });
 
+program
+    .command('update')
+    .description('update resources.')
+    .option('-g, --global', 'update global resources.', false)
+    .option('-f, --force', 'force to overwrite.', false)
+    .action(function(options){
+        var update = require('../src/update');
+        update(options);
+    });
+
 program.parse(process.argv);
