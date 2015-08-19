@@ -84,4 +84,25 @@ program
     .description('who am i?')
     .action(require('../src/whoami'));
 
+program
+    .command('install [model]')
+    .description('install modules')
+    .action(function(model){
+        console.log(model);
+    });
+
+program
+    .command('uninstall [model]')
+    .description('uninstall modules')
+    .action(function(model){
+        console.log(model);
+    });
+
+program
+    .command('publish')
+    .description('publish modules')
+    .action(function(){
+        console.log('publishing');
+    });
+
 program.parse(process.argv);

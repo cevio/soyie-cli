@@ -86,8 +86,8 @@ model.updateLocal = function(options){
 
         if ( pkg.bootstrap ){
             copy('src/lib/bootstrap/js/bootstrap.js', 'lib/bootstrap.js');
-            copy('src/lib/css', 'css');
-            copy('src/lib/fonts', 'fonts');
+            copy('src/lib/bootstrap/css', 'css');
+            copy('src/lib/bootstrap/fonts', 'fonts');
         }
 
         if ( options.force ){
@@ -96,5 +96,12 @@ model.updateLocal = function(options){
             copy('common/LICENSE.txt', '../LICENSE.txt');
         }
         console.log(clc.bgGreen('update new resources success!'));
+    }
+};
+
+model.dir = function(pather){
+    var target = path.resolve(process.cwd(), 'src', target);
+    if ( !fs.existsSync(pather) ){
+        fs.mkdirSync(target);
     }
 };
