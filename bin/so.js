@@ -69,4 +69,19 @@ program
         update(options);
     });
 
+program
+    .command('regist')
+    .description('regist user')
+    .action(require('../src/regist'));
+
+program
+    .command('login')
+    .description('login user')
+    .action(require('../src/login'));
+
+program
+    .command('whoami')
+    .description('who am i?')
+    .action(require('../src/whoami'));
+
 program.parse(process.argv);
