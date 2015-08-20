@@ -87,22 +87,22 @@ program
 program
     .command('install [model]')
     .description('install modules')
-    .action(function(model){
-        console.log(model);
+    .option('-s, --save <mods>', 'write in package.')
+    .action(function(model, options){
+        console.log(model, options);
     });
 
 program
     .command('uninstall [model]')
     .description('uninstall modules')
-    .action(function(model){
-        console.log(model);
+    .option('-s, --save <mods>', 'unwrite in package.')
+    .action(function(model, options){
+        console.log(model, options);
     });
 
 program
     .command('publish')
     .description('publish modules')
-    .action(function(){
-        console.log('publishing');
-    });
+    .action(require('../src/publish'));
 
 program.parse(process.argv);
