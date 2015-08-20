@@ -87,7 +87,7 @@ model.files = function(pather){
 model.post = function(buffer, config, pkg){
     console.log(clc.cyan('- posting ') + clc.blue(pkg.name + '@' + pkg.version) + clc.green(' ...'));
     request.post({
-        url: host + '/publish?guid=' + config.guid + '&token=' + config.token,
+        url: host + '/package/publish?guid=' + config.guid + '&token=' + config.token,
         formData: {
             binary: {
                 value: buffer,

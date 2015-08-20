@@ -88,8 +88,9 @@ program
     .command('install [model]')
     .description('install modules')
     .option('-s, --save <mods>', 'write in package.')
+    .option('-v, --version <ver>', 'get the version')
     .action(function(model, options){
-        console.log(model, options);
+        require('../src/install')(model, options);
     });
 
 program
@@ -97,7 +98,7 @@ program
     .description('uninstall modules')
     .option('-s, --save <mods>', 'unwrite in package.')
     .action(function(model, options){
-        console.log(model, options);
+        require('../src/uninstall')(model, options);
     });
 
 program
