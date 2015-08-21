@@ -1,7 +1,6 @@
 /**
  * Created by evio on 15/8/18.
  */
-var host = 'http://h5.51.nb/resources/soyie-resources.zip';
 var clc = require('cli-color');
 var JSZip = require('node-zip');
 var fs = require('fs');
@@ -9,6 +8,7 @@ var path = require('path');
 var http = require('http');
 var url = require('url');
 var fse = require('fs-extra');
+var host = require('../package.json').soyiehost;
 
 var model = module.exports = function(options){
     if ( options.global ){
@@ -19,10 +19,10 @@ var model = module.exports = function(options){
 };
 
 model.updateGlobal = function(){
-    var hostParse = url.parse(host);
+    var hostParse = url.parse(host + '/resources?filename=soyie-resources.zip');
     var options = {
         host: hostParse.host,
-        port: 80,
+        port: hostParse.port,
         path: hostParse.pathname
     };
     http.get(options, function(res) {
@@ -30,14 +30,9 @@ model.updateGlobal = function(){
         res
             .on('data', function(chunk) {
                 data.push(chunk);
-                dataLen += chunk.length;
             })
             .on('end', function() {
-                var buf = new Buffer(dataLen);
-                for (var i=0, len = data.length, pos = 0; i < len; i++) {
-                    data[i].copy(buf, pos);
-                    pos += data[i].length;
-                }
+                var buf = Buffer.concat(data);
                 var zip = new JSZip(buf, { base64: false });
                 var fds = zip.folder(/.+/);
                 var fls = zip.file(/.+/);
