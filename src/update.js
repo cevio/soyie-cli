@@ -19,43 +19,34 @@ var model = module.exports = function(options){
 };
 
 model.updateGlobal = function(){
-    var hostParse = url.parse(host + '/resources?filename=soyie-resources.zip');
-    var options = {
-        host: hostParse.host,
-        port: hostParse.port,
-        path: hostParse.pathname
-    };
-    http.get(options, function(res) {
-        var data = [], dataLen = 0;
-        res
-            .on('data', function(chunk) {
-                data.push(chunk);
-            })
-            .on('end', function() {
-                var buf = Buffer.concat(data);
-                var zip = new JSZip(buf, { base64: false });
-                var fds = zip.folder(/.+/);
-                var fls = zip.file(/.+/);
+    http.get(host + '/resource?filename=soyie-resources.zip', function(res) {
+        var data = [];
+        res.on('data', function(chunk) { data.push(chunk); });
+        res.on('end', function() {
+            var buf = Buffer.concat(data);
+            var zip = new JSZip(buf, { base64: false });
+            var fds = zip.folder(/.+/);
+            var fls = zip.file(/.+/);
 
-                fds.forEach(function(dir){
-                    if ( /^\_\_MACOSX/.test(dir.name) ) return;
-                    var pather = path.resolve(__dirname, '..', 'res', dir.name);
-                    if ( !fs.existsSync(pather) ){
-                        console.log('-- ' + clc.blue('make dir:') + ' ' + pather);
-                        fs.mkdirSync(pather);
-                    }
-                });
-
-                fls.forEach(function(file){
-                    if ( /^\_\_MACOSX/.test(file.name) ) return;
-                    var pather = path.resolve(__dirname, '..', 'res', file.name);
-                    var content = zip.file(file.name).asNodeBuffer();
-                    fs.writeFileSync(pather, content);
-                    console.log('-- ' + clc.green('make file:') + ' ' + pather);
-                });
-
-                console.log(clc.bgGreen('update new resources success!'));
+            fds.forEach(function(dir){
+                if ( /^\_\_MACOSX/.test(dir.name) ) return;
+                var pather = path.resolve(__dirname, '..', 'res', dir.name);
+                if ( !fs.existsSync(pather) ){
+                    console.log('-- ' + clc.blue('make dir:') + ' ' + pather);
+                    fs.mkdirSync(pather);
+                }
             });
+
+            fls.forEach(function(file){
+                if ( /^\_\_MACOSX/.test(file.name) ) return;
+                var pather = path.resolve(__dirname, '..', 'res', file.name);
+                var content = zip.file(file.name).asNodeBuffer();
+                fs.writeFileSync(pather, content);
+                console.log('-- ' + clc.green('make file:') + ' ' + pather);
+            });
+
+            console.log(clc.bgGreen('update new resources success!'));
+        });
     });
 };
 
