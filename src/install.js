@@ -97,10 +97,8 @@ model.done = function(code, body, cd, save){
 
             var that = require(m);
             var k = that.soyieDeps;
-            if ( !k ) that.soyieDeps = [];
-            if ( that.soyieDeps.indexOf(pkg.name) == -1 ){
-                that.soyieDeps.push(pkg.name);
-            }
+            if ( !k ) that.soyieDeps = {};
+            that.soyieDeps[pkg.name] = pkg.version;
             fs.writeFileSync(m, JSON.stringify(that));
         }
     }else{
