@@ -26,10 +26,9 @@ var model = module.exports = function(name, options){
 
             var that = require(m);
             var k = that.soyieDeps;
-            if ( !k ) that.soyieDeps = [];
-            var z = that.soyieDeps.indexOf(names);
-            if ( z > -1 ){
-                that.soyieDeps.splice(z, 1);
+            if ( !k ) that.soyieDeps = {};
+            if ( that.soyieDeps[names] ){
+                delete that.soyieDeps[names];
             }
             fs.writeFileSync(m, JSON.stringify(that));
         }

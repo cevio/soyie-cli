@@ -64,6 +64,62 @@ so server 9001 -i 192.168.1.34
 
 创建了一个基于 `192.168.1.34:9001` 的服务。
 
+## so regist ##
+
+注册一个新的用户
+
+## so login ##
+
+登陆服务。有些功能是需要登陆后才能使用的
+
+## so whoami ##
+
+查看我的登陆状态
+
+## so publish ##
+
+向51内部服务器发送一个组件，可以通过install命令来获取
+
+``` html
+$ cd your-coms-root-dir
+$ so publish
+```
+
+## so install ##
+
+安装一个内部模块
+
+``` html
+so install jquery
+so install --save jquery
+so install jquery --version 2.1.4
+so install --save jquery --version 2.1.4
+```
+
+## so uninstall ##
+
+卸载一个模块
+
+``` html
+so uninstall jquery
+so uninstall --save jquery
+```
+
+## so update ##
+
+更新全局资源包或者项目资源包
+
+``` html
+so update -g
+# 将更新整个系统内部的资源包到最新
+```
+
+``` html
+cd your-project
+so update
+# 将这个项目中指定的资源更新到最新
+```
+
 ## License ##
 
 MIT
