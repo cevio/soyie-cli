@@ -80,18 +80,13 @@ model.done = function(code, body, cd, save){
         console.log(clc.green('+ install ' + pkg.name + ' success.'));
 
         var deps = pkg.soyieDeps;
-        if ( !deps ) deps = [];
+        if ( !deps ) deps = {};
 
-        if ( deps.length ){
-            var d = pm('./node_modules');
-            if ( !fs.existsSync(d) ){
-                fs.mkdirSync(d);
-            }
-            deps.forEach(function(x){
-                console.log(clc.blue('- dep: ' + x));
-                model(x);
-            });
+        for ( var ez in deps ){
+            console.log(clc.blue('- dep: ' + ez));
+            model(ez, { version: deps[ez] }, plguinname);
         }
+
 
         if ( save ){
             var m = path.resolve(process.cwd(), 'package.json');
