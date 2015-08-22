@@ -20,7 +20,7 @@ model.prototype.build = function(options){
         var config = fse.readJsonSync(this.pkg);
         if ( config.isSoyie ){
             this.config = config.soyieRenderConfigs;
-            this.files = config.files;
+            this.soyiefiles = config.soyiefiles;
             this.handle(options);
         }else{
             console.log(clc.red('error: this dir is not a soyie project'));
@@ -59,10 +59,9 @@ model.prototype.copyFiles = function(){
     if ( this.soyiefiles && this.soyiefiles.length ){
         var that = this;
         this.soyiefiles.forEach(function(file){
-            var source = model.path(file);
-            var dist = path.relative(model.path('./src'), source);
-            var target = path.resolve(cwd, './dist', dist);
-            that.autoCreate(path.dirname(target));
+            var source = path.resolve(cwd, './src', file);
+            var target = path.resolve(cwd, './dist', file);
+            that.autoCreate(target);
             fse.copySync(source, target);
         });
     }
