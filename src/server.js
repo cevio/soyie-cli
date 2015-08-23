@@ -17,7 +17,7 @@ server.prototype.use = function(fn){
 server.prototype.init = function(i){
     if ( !i ) i = 0;
     if ( this.stacks.length > 0 && this.stacks[i] ){
-        var stack = this.stacks[0];
+        var stack = this.stacks[i];
         var that = this;
         var next = function(){ that.init(i + 1) };
         stack(this.req, this.res, next);
